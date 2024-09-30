@@ -1,0 +1,55 @@
+Bibliotecas:
+#Importar bibliotecas
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+Primeiro comando:
+data = '/content/laptop_price - dataset.csv'
+
+df1 = pd.read_csv(data)
+df1.head()
+
+Dicionário de dados
+
+Segundo comando:
+for i in df1.columns:
+  print('`', i, '`', '-\n')
+
+Terceiro comando:
+# odernar em ordem decescente as variáveis por seus valores ausentes
+(df1.isnull().sum() / df1.shape[0]).sort_values(ascending=False)
+
+Quarto comando:
+df1.info()
+
+Quinto comando:
+# prompt: Using dataframe df: transforme as colunas Último	Abertura	Máxima	Mínima	Vol. para float
+
+# Replacing commas with dots and converting to float for the specified columns
+for column in ['\u00daltimo', 'Abertura', 'M\u00e1xima', 'M\u00ednima', 'Vol.']:
+  df1[column] = df1[column].str.replace('.', '').str.replace(',', '.').astype(float, errors='ignore')
+# prompt: transforme a coluna de data para o tipo date
+
+df1['Data'] = pd.to_datetime(df1['Data'], format='%d.%m.%Y')
+
+Sexto comando:
+df1.info()
+
+Sétimo comando:
+#Definir a data como índice
+df1.set_index('Data', inplace=True)
+
+Oitavo comando:
+#Criar o gráfico de preços
+plt.figure(figsize=(10, 6))
+plt.plot(df1.index, df1['Máxima'], label = 'Máxima')
+
+plt.title('Preço do Boi Gordo ao longo do tempo')
+plt.xlabel('Data')
+plt.ylabel('Preço')
+plt.legend()
+plt.grid(True)
+plt.show()
